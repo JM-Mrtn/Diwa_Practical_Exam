@@ -24,8 +24,6 @@ export class SalaryComponent {
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
 
-  // NULL = active catalog record
-  // Timestamp = soft deleted
   @Column({
     name: "deleted_at",
     type: "timestamp",
@@ -33,8 +31,6 @@ export class SalaryComponent {
   })
   deletedAt!: Date | null;
 
-  // NULL = enabled catalog component
-  // Timestamp = disabled catalog component
   @Column({
     name: "disabled_at",
     type: "timestamp",

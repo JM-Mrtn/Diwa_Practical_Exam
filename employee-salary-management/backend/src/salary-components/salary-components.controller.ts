@@ -25,10 +25,6 @@ import {
 export class SalaryComponentsController {
   constructor(private readonly service: SalaryComponentsService) {}
 
-  // ==================================
-  // COMPONENT CATALOG
-  // ==================================
-
   @Get("salary-components")
   catalog() {
     return this.service.listCatalog();
@@ -47,27 +43,20 @@ export class SalaryComponentsController {
     return this.service.renameCatalog(id, dto);
   }
 
-  // Disable catalog component
   @Patch("salary-components/:id/disable")
   disableCatalog(@Param("id", ParseIntPipe) id: number) {
     return this.service.disableCatalog(id);
   }
 
-  // Enable catalog component
   @Patch("salary-components/:id/enable")
   enableCatalog(@Param("id", ParseIntPipe) id: number) {
     return this.service.enableCatalog(id);
   }
 
-  // Soft delete catalog component
   @Delete("salary-components/:id")
   delete(@Param("id", ParseIntPipe) id: number) {
     return this.service.softDeleteCatalog(id);
   }
-
-  // ==================================
-  // EMPLOYEE COMPONENT ASSIGNMENTS
-  // ==================================
 
   @Get("employees/:employeeId/components")
   list(@Param("employeeId", ParseIntPipe) employeeId: number) {
@@ -91,7 +80,6 @@ export class SalaryComponentsController {
     return this.service.changeAmount(employeeId, assignedId, dto);
   }
 
-  // Disable one employee assignment
   @Patch("employees/:employeeId/components/:assignedId/disable")
   disableAssignment(
     @Param("employeeId", ParseIntPipe) employeeId: number,
@@ -100,7 +88,6 @@ export class SalaryComponentsController {
     return this.service.disableAssignment(employeeId, assignedId);
   }
 
-  // Enable one employee assignment
   @Patch("employees/:employeeId/components/:assignedId/enable")
   enableAssignment(
     @Param("employeeId", ParseIntPipe) employeeId: number,
@@ -109,7 +96,6 @@ export class SalaryComponentsController {
     return this.service.enableAssignment(employeeId, assignedId);
   }
 
-  // Soft delete one employee assignment
   @Delete("employees/:employeeId/components/:assignedId")
   remove(
     @Param("employeeId", ParseIntPipe) employeeId: number,

@@ -48,8 +48,6 @@ export class EmployeeSalaryComponent {
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
 
-  // NULL = not soft deleted
-  // Timestamp = soft deleted
   @Column({
     name: "deleted_at",
     type: "timestamp",
@@ -57,8 +55,6 @@ export class EmployeeSalaryComponent {
   })
   deletedAt!: Date | null;
 
-  // NULL = active assignment
-  // Timestamp = disabled assignment
   @Column({
     name: "disabled_at",
     type: "timestamp",

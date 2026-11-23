@@ -1,4 +1,3 @@
-// PostgreSQL numeric/decimal values are returned as strings by the pg driver.
 export function numberOf(value: string | number | null | undefined): number {
   return Number(value ?? 0);
 }

@@ -33,12 +33,6 @@ export class SalaryComponentsService {
     private readonly employees: EmployeesService,
   ) {}
 
-  // ==================================
-  // COMPONENT CATALOG
-  // ==================================
-
-  // Show active and disabled components.
-  // Do not show soft-deleted components.
   async listCatalog() {
     return this.components.find({
       where: {
@@ -50,7 +44,6 @@ export class SalaryComponentsService {
     });
   }
 
-  // Find a component that has not been soft deleted.
   private async findCatalogComponent(id: number) {
     const component = await this.components.findOne({
       where: {
@@ -66,7 +59,6 @@ export class SalaryComponentsService {
     return component;
   }
 
-  // Only active and enabled components can be assigned.
   async getActiveComponent(id: number) {
     const component = await this.findCatalogComponent(id);
 
@@ -79,7 +71,6 @@ export class SalaryComponentsService {
     return component;
   }
 
-  // Create catalog component.
   async createCatalog(dto: CreateComponentDto) {
     const name = dto.name.trim();
 
@@ -98,7 +89,6 @@ export class SalaryComponentsService {
     );
   }
 
-  // Rename component.
   async renameCatalog(id: number, dto: UpdateComponentDto) {
     const component = await this.findCatalogComponent(id);
 
@@ -117,7 +107,6 @@ export class SalaryComponentsService {
     return this.components.save(component);
   }
 
-  // Check duplicate component names.
   private async checkName(name: string, excludeId?: number) {
     const duplicate = await this.components
       .createQueryBuilder("component")
@@ -132,7 +121,6 @@ export class SalaryComponentsService {
     }
   }
 
-  // Disable catalog component.
   async disableCatalog(id: number) {
     const component = await this.findCatalogComponent(id);
 
@@ -151,7 +139,6 @@ export class SalaryComponentsService {
     };
   }
 
-  // Enable catalog component.
   async enableCatalog(id: number) {
     const component = await this.findCatalogComponent(id);
 
@@ -169,8 +156,6 @@ export class SalaryComponentsService {
     };
   }
 
-  // Soft delete catalog component.
-  // Only disabled components can be removed.
   async softDeleteCatalog(id: number) {
     const component = await this.findCatalogComponent(id);
 
@@ -189,11 +174,6 @@ export class SalaryComponentsService {
     };
   }
 
-  // ==================================
-  // EMPLOYEE COMPONENT ASSIGNMENTS
-  // ==================================
-
-  // Find an assignment that is not soft deleted.
   private async findAssignment(employeeId: number, assignedId: number) {
     await this.employees.findOne(employeeId);
 
@@ -215,7 +195,6 @@ export class SalaryComponentsService {
     return assignment;
   }
 
-  // List employee assignments, including disabled ones.
   async listForEmployee(employeeId: number) {
     await this.employees.findOne(employeeId);
 
@@ -232,14 +211,11 @@ export class SalaryComponentsService {
       },
     });
 
-    // Hide assignments whose catalog component
-    // has been soft deleted.
     return rows.filter(
       (row) => row.component && row.component.deletedAt === null,
     );
   }
 
-  // Assign component to employee.
   async assign(employeeId: number, dto: AssignComponentDto) {
     await this.employees.findOne(employeeId);
 
@@ -270,7 +246,6 @@ export class SalaryComponentsService {
     );
   }
 
-  // Update assigned amount.
   async changeAmount(
     employeeId: number,
     assignedId: number,
@@ -291,7 +266,6 @@ export class SalaryComponentsService {
     return this.assignments.save(assignment);
   }
 
-  // Disable employee assignment.
   async disableAssignment(employeeId: number, assignedId: number) {
     const assignment = await this.findAssignment(employeeId, assignedId);
 
@@ -312,7 +286,6 @@ export class SalaryComponentsService {
     };
   }
 
-  // Enable employee assignment.
   async enableAssignment(employeeId: number, assignedId: number) {
     const assignment = await this.findAssignment(employeeId, assignedId);
 
@@ -322,7 +295,6 @@ export class SalaryComponentsService {
       );
     }
 
-    // The catalog component must also be enabled.
     await this.getActiveComponent(assignment.componentId);
 
     assignment.disabledAt = null;
@@ -336,8 +308,6 @@ export class SalaryComponentsService {
     };
   }
 
-  // Soft delete employee assignment.
-  // Only disabled assignments can be removed.
   async remove(employeeId: number, assignedId: number) {
     const assignment = await this.findAssignment(employeeId, assignedId);
 
